@@ -36,6 +36,12 @@ function update(changes, id) {
         })
 }
 
-function remove(id) {
-    return db('schemes').where({ id }).del()
+async function remove(id) {
+    const temp = await db('schemes').where({ id }).first();
+    if (temp) {
+        const del = await db('schemes').where({ id }).del();
+        if (del === 1) {
+            return temp;
+        }
+    }
 }
